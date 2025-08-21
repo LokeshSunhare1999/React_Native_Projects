@@ -4,7 +4,7 @@ import { View, Text, ActivityIndicator, FlatList, Image } from "react-native";
 import { images } from "@/constants/images";
 import { icons } from "@/constants/icons";
 
-import useFetch from "@/services/useFetch";
+import useFetch from "@/services/usefetch";
 import { fetchMovies } from "@/services/api";
 import { updateSearchCount } from "@/services/appwrite";
 
@@ -25,7 +25,7 @@ const Search = () => {
   const handleSearch = (text: string) => {
     setSearchQuery(text);
   };
-console.log('movies?.results[0] :>>>>>>>>>>>>>>>>> ', movies?.results[0]);
+
   // Debounced search effect
   useEffect(() => {
     const timeoutId = setTimeout(async () => {
@@ -33,8 +33,8 @@ console.log('movies?.results[0] :>>>>>>>>>>>>>>>>> ', movies?.results[0]);
         await loadMovies();
 
         // Call updateSearchCount only if there are results
-        if (movies?.results?.length! > 0 && movies?.results[0]) {
-          await updateSearchCount(searchQuery, movies?.results[0]);
+        if (movies?.length! > 0 && movies?.[0]) {
+          await updateSearchCount(searchQuery, movies[0]);
         }
       } else {
         reset();
@@ -54,7 +54,7 @@ console.log('movies?.results[0] :>>>>>>>>>>>>>>>>> ', movies?.results[0]);
 
       <FlatList
         className="px-5"
-        data={movies?.results as Movie[]}
+        data={movies as Movie[]}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <MovieDisplayCard {...item} />}
         numColumns={3}
@@ -95,7 +95,7 @@ console.log('movies?.results[0] :>>>>>>>>>>>>>>>>> ', movies?.results[0]);
             {!loading &&
               !error &&
               searchQuery.trim() &&
-              movies?.results?.length! > 0 && (
+              movies?.length! > 0 && (
                 <Text className="text-xl text-white font-bold">
                   Search Results for{" "}
                   <Text className="text-accent">{searchQuery}</Text>
